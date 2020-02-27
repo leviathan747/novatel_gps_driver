@@ -93,7 +93,7 @@ namespace novatel_gps_driver
     NovatelMessageOpts opts;
     opts["gpgga"] = 0.05;
     opts["gprmc"] = 0.05;
-    opts["bestposa"] = 0.05;
+    opts["bestgnssposa"] = 0.05;
     opts["timea"] = 1.0;
     opts["rangea"] = 1;
     return Connect(device, connection, opts);
@@ -1030,7 +1030,7 @@ namespace novatel_gps_driver
     {
       case BestposParser::MESSAGE_ID:
       {
-        novatel_gps_msgs::NovatelPositionPtr position = bestpos_parser_.ParseBinary(msg);
+        novatel_gps_msgs::NovatelPositionPtr position = bestgnsspos_parser_.ParseBinary(msg);
         position->header.stamp = stamp;
         novatel_positions_.push_back(position);
         bestpos_sync_buffer_.push_back(position);
@@ -1222,9 +1222,9 @@ namespace novatel_gps_driver
   NovatelGps::ReadResult NovatelGps::ParseNovatelSentence(const NovatelSentence& sentence,
                                                           const ros::Time& stamp) noexcept(false)
   {
-    if (sentence.id == "BESTPOSA")
+    if (sentence.id == "BESTGNSSPOSA")
     {
-      novatel_gps_msgs::NovatelPositionPtr position = bestpos_parser_.ParseAscii(sentence);
+      novatel_gps_msgs::NovatelPositionPtr position = bestgnsspos_parser_.ParseAscii(sentence);
       position->header.stamp = stamp;
       novatel_positions_.push_back(position);
       bestpos_sync_buffer_.push_back(position);
@@ -1241,7 +1241,7 @@ namespace novatel_gps_driver
       utm_position->header.stamp = stamp;
       novatel_utm_positions_.push_back(utm_position);
     }
-    else if (sentence.id == "BESTVELA")
+    else if (sentence.id == "BESTGNSSVELA")
     {
       novatel_gps_msgs::NovatelVelocityPtr velocity = bestvel_parser_.ParseAscii(sentence);
       velocity->header.stamp = stamp;

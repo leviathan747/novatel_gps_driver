@@ -62,7 +62,7 @@
 
 #include <novatel_gps_driver/novatel_message_extractor.h>
 
-#include <novatel_gps_driver/parsers/bestpos.h>
+#include <novatel_gps_driver/parsers/bestgnsspos.h>
 #include <novatel_gps_driver/parsers/bestxyz.h>
 #include <novatel_gps_driver/parsers/bestutm.h>
 #include <novatel_gps_driver/parsers/bestvel.h>
@@ -232,9 +232,9 @@ namespace novatel_gps_driver
        */
       void GetNovatelCorrectedImuData(std::vector<novatel_gps_msgs::NovatelCorrectedImuDataPtr>& imu_messages);
       /**
-       * @brief Provides any BESTPOS messages that have been received since the
+       * @brief Provides any BESTGNSSPOS messages that have been received since the
        * last time this was called.
-       * @param[out] positions New BESTPOS messages.
+       * @param[out] positions New BESTGNSSPOS messages.
        */
       void GetNovatelPositions(std::vector<novatel_gps_msgs::NovatelPositionPtr>& positions);
       /**
@@ -474,7 +474,7 @@ namespace novatel_gps_driver
       NovatelMessageExtractor extractor_;
 
       // Message parsers
-      BestposParser bestpos_parser_;
+      BestposParser bestgnsspos_parser_;
       BestxyzParser bestxyz_parser_;
       BestutmParser bestutm_parser_;
       BestvelParser bestvel_parser_;

@@ -32,7 +32,7 @@
 #include <novatel_gps_driver/parsers/header.h>
 #include <boost/make_shared.hpp>
 
-const std::string novatel_gps_driver::BestvelParser::MESSAGE_NAME = "BESTVEL";
+const std::string novatel_gps_driver::BestvelParser::MESSAGE_NAME = "BESTGNSSVEL";
 
 uint32_t novatel_gps_driver::BestvelParser::GetMessageId() const
 {

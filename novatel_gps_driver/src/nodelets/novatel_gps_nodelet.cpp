@@ -51,7 +51,7 @@
  *    published if `publish_gpgsa` is set `true`)
  * \e gprmc <tt>novatel_gps_msgs/Gprmc</tt> - Raw GPRMC data for debugging (only
  *    published if `publish_nmea_messages` is set `true`)
- * \e bestpos <tt>novatel_gps_msgs/NovatelPosition</tt> - High fidelity Novatel-
+ * \e bestgnsspos <tt>novatel_gps_msgs/NovatelPosition</tt> - High fidelity Novatel-
  *    specific position and receiver status data. (only published if
  *    `publish_novatel_positions` is set `true`)
  * \e bestutm <tt>novatel_gps_msgs/NovatelUtmPosition</tt> - High fidelity Novatel-
@@ -85,7 +85,7 @@
  * \e gpgga_gprmc_sync_tol <tt>dbl</tt> - Sync tolarance (seconds) for syncing
  *    GPGGA messages with GPRMC messages. [0.01]
  * \e gpgga_position_sync_tol <tt>dbl</tt> - Sync tolarance (seconds) for
- *    syncing GPGGA messages with BESTPOS messages. [0.01]
+ *    syncing GPGGA messages with BESTGNSSPOS messages. [0.01]
  * \e imu_rate <tt>dbl</tt> - Rate at which to publish sensor_msgs/Imu messages.
  *    [100.0]
  * \e imu_sample_rate <tt>dbl</tt> - Rate at which the device internally samples
@@ -119,7 +119,7 @@
  * \e use_binary_message <tt>bool</tt> - If set true, the driver requests
  *    binary NovAtel messages from the device; if false, it requests ASCII
  *    messages.  [false]
- * \e wait_for_position <tt>bool</tt> - Wait for BESTPOS messages to arrive
+ * \e wait_for_position <tt>bool</tt> - Wait for BESTGNSSPOS messages to arrive
  *    before publishing GPSFix messages. [false]
  * \e span_frame_to_ros_frame <tt>bool</tt> - Translate the SPAN coordinate
  *    frame to a ROS coordinate frame using the VEHICLEBODYROTATION and
@@ -317,7 +317,7 @@ namespace novatel_gps_driver
 
       if (publish_novatel_positions_)
       { 
-        novatel_position_pub_ = swri::advertise<novatel_gps_msgs::NovatelPosition>(node, "bestpos", 100);
+        novatel_position_pub_ = swri::advertise<novatel_gps_msgs::NovatelPosition>(node, "bestgnsspos", 100);
       }
 
       if (publish_novatel_xyz_positions_)
@@ -332,7 +332,7 @@ namespace novatel_gps_driver
 
       if (publish_novatel_velocity_)
       {
-        novatel_velocity_pub_ = swri::advertise<novatel_gps_msgs::NovatelVelocity>(node, "bestvel", 100);
+        novatel_velocity_pub_ = swri::advertise<novatel_gps_msgs::NovatelVelocity>(node, "bestgnssvel", 100);
       }
       else
       {
@@ -432,7 +432,7 @@ namespace novatel_gps_driver
       NovatelMessageOpts opts;
       opts["gpgga"] = polling_period_;
       opts["gprmc"] = polling_period_;
-      opts["bestpos" + format_suffix] = polling_period_;  // Best position
+      opts["bestgnsspos" + format_suffix] = polling_period_;  // Best position
       opts["time" + format_suffix] = 1.0;  // Time
       if (publish_novatel_xyz_positions_)
       {
@@ -492,7 +492,7 @@ namespace novatel_gps_driver
       }
       if (publish_novatel_velocity_)
       {
-        opts["bestvel" + format_suffix] = polling_period_;  // Best velocity
+        opts["bestgnssvel" + format_suffix] = polling_period_;  // Best velocity
       }
       if (publish_range_messages_)
       {
@@ -1215,7 +1215,8 @@ namespace novatel_gps_driver
         status.add("Auxiliary1 Flag", rcvr_status.aux1_status_event_flag?"true":"false");
         status.add("Auxiliary2 Flag", rcvr_status.aux2_status_event_flag?"true":"false");
         status.add("Auxiliary3 Flag", rcvr_status.aux3_status_event_flag?"true":"false");
-        NODELET_WARN("Novatel status code: %d", rcvr_status.original_status_code);
+        //Don't want an unending stream of status codes
+        //NODELET_WARN("Novatel status code: %d", rcvr_status.original_status_code);
         status.summary(level, msg);
       }
     }

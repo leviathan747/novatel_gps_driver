@@ -27,8 +27,8 @@
 //
 // *****************************************************************************
 
-#ifndef NOVATEL_GPS_DRIVER_BESTPOS_H
-#define NOVATEL_GPS_DRIVER_BESTPOS_H
+#ifndef NOVATEL_GPS_DRIVER_BESTGNSSPOS_H
+#define NOVATEL_GPS_DRIVER_BESTGNSSPOS_H
 
 #include <novatel_gps_msgs/NovatelPosition.h>
 
@@ -55,4 +55,4 @@ namespace novatel_gps_driver
   };
 }
 
-#endif //NOVATEL_GPS_DRIVER_BESTPOS_H
+#endif //NOVATEL_GPS_DRIVER_BESTGNSSPOS_H

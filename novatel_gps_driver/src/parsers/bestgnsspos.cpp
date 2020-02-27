@@ -27,7 +27,7 @@
 //
 // *****************************************************************************
 
-#include <novatel_gps_driver/parsers/bestpos.h>
+#include <novatel_gps_driver/parsers/bestgnsspos.h>
 
 #include <novatel_gps_driver/parsers/header.h>
 
@@ -35,7 +35,7 @@
 
 namespace novatel_gps_driver
 {
-  const std::string BestposParser::MESSAGE_NAME = "BESTPOS";
+  const std::string BestposParser::MESSAGE_NAME = "BESTGNSSPOS";
 
   uint32_t BestposParser::GetMessageId() const
   {
@@ -52,7 +52,7 @@ namespace novatel_gps_driver
     if (bin_msg.data_.size() != BINARY_LENGTH)
     {
       std::stringstream error;
-      error << "Unexpected BESTPOS message length: " << bin_msg.data_.size();
+      error << "Unexpected BESTGNSSPOS message length: " << bin_msg.data_.size();
       throw ParseException(error.str());
     }
     novatel_gps_msgs::NovatelPositionPtr ros_msg =
@@ -117,7 +117,7 @@ namespace novatel_gps_driver
     if (sentence.body.size() != ASCII_LENGTH)
     {
       std::stringstream error;
-      error << "Unexpected number of BESTPOS message fields: " << sentence.body.size();
+      error << "Unexpected number of BESTGNSSPOS message fields: " << sentence.body.size();
       throw ParseException(error.str());
     }
 
@@ -154,7 +154,7 @@ namespace novatel_gps_driver
 
     if (!valid)
     {
-      throw ParseException("Invalid field in BESTPOS message");
+      throw ParseException("Invalid field in BESTGNSSPOS message");
     }
 
     return msg;
